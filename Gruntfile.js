@@ -136,7 +136,7 @@ module.exports = function(grunt) {
             },
             images: {
                 expand: true,
-                dest: 'build/tmp/images',
+                dest: 'build/public/images',
                 cwd: 'src/public/images/scaled',
                 src: ['**/*']
             }
@@ -171,14 +171,7 @@ module.exports = function(grunt) {
             },
             sass: {
                 files: ['src/public/**/*.scss'],
-                tasks: ['copy:sass', 'compass:dev', 'newer:imagemin'],
-                options: {
-                    livereload: true
-                }
-            },
-            html: {
-                files: ['src/public/**/*.ejs', 'src/public/**/*.html'],
-                tasks: ['copy:html'],
+                tasks: ['copy:sass', 'compass:dev'],
                 options: {
                     livereload: true
                 }
@@ -198,7 +191,7 @@ module.exports = function(grunt) {
             },
             images: {
                 files: ['src/public/images/**/*'],
-                tasks: ['copy:images', 'imagemin'],
+                tasks: ['copy:images'],
                 options: {
                     livereload: true
                 }
@@ -297,7 +290,10 @@ module.exports = function(grunt) {
                     region: 'us-west-2',
                     uploadConcurrency: 4,
                     gzip: true,
-                    excludeFromGzip: ['*.png', '*.jpg', '*.jpeg', '*.ico', '*.gif']
+                    excludeFromGzip: ['*.png', '*.jpg', '*.jpeg', '*.ico', '*.gif'],
+                    params: {
+                        CacheControl: 'public, max-age=86400'
+                    }
                 },
                 files: [
                     {
@@ -328,6 +324,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-newer');
     grunt.loadNpmTasks('grunt-aws-s3-gzip');
 
-    grunt.registerTask('default', ['clean:all', 'copy:prod', 'compass:prod', 'imagemin', 'concat:prod', 'uglify:prod', 'cssmin:prod', 'aws_s3:prod']);
-    grunt.registerTask('debug', ['clean:all', 'copy:dev', 'compass:dev', 'concurrent:dev']);
+    grunt.registerTask('build:production', ['clean:all', 'copy:prod', 'compass:prod', 'imagemin', 'concat:prod', 'uglify:prod', 'cssmin:prod', 'aws_s3:prod']);
+    grunt.registerTask('build:development', ['clean:all', 'copy:dev', 'compass:dev', 'concurrent:dev']);
 };
