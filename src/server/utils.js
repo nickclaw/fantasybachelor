@@ -7,7 +7,7 @@ exports.verifyEnvVar = function() {
     _.each(args, function(arg) {
         conf = conf[arg];
         if (!conf) {
-            throw new Error('Please set the ' + args.join('.') + ' environment variable.');
+            throw new Error('Please set the ' + Array.prototype.join.call(args, '.') + ' environment variable.');
         }
     });
 };
