@@ -1,32 +1,25 @@
-app.controller('weekController', ['$rootScope', '$scope', '$routeParams', '$interval', 'EVENTS', 'CONTESTANT_MODAL_MODES', 'weeksFactory', 'backendFactory', 'routeFactory', function($rootScope, $scope, $routeParams, $interval, EVENTS, CONTESTANT_MODAL_MODES, weeksFactory, backendFactory, routeFactory) {
+app.controller('weekController', [
+    '$rootScope',
+    '$scope',
+    '$routeParams',
+    '$interval',
+    'EVENTS',
+    'CONTESTANT_MODAL_MODES',
+    'weeksFactory',
+    'backendFactory',
+    'routeFactory',
+    'selectionFactory',
+function($rootScope, $scope, $routeParams, $interval, EVENTS, CONTESTANT_MODAL_MODES, weeksFactory, backendFactory, routeFactory, selectionFactory) {
     console.log($routeParams);
+    console.log(selectionFactory);
 
     $rootScope.showHeaderFooter = true;
     $scope.week = weeksFactory.getWeekById(parseInt($routeParams.weekId)) || weeksFactory.getCurrentWeek();
     $scope.selectionRange = _.range(0, $scope.week.numberOfSelections);
+    selectionFactory.setWeekById($scope.week.id);
 
     $scope.isEliminated = function(contestant) {
         return _.findWhere($scope.week.eliminatedContestants, contestant);
-    };
-
-    $scope.selectContestant = function(contestant, multiplier) {
-        var contestantObject = {
-            id : contestant.id,
-            multiplier : multiplier
-        };
-        $scope.week.selectedContestants.push(contestantObject);
-        $scope.week.remainingContestants = _.reject($scope.week.remainingContestants, contestantObject);
-        backendFactory.selectContestant($scope.week.id, contestant.id);
-    };
-
-    $scope.removeContestant = function(contestant, multiplier) {
-        var contestantObject = {
-            id : contestant.id,
-            multiplier : multiplier
-        };
-        $scope.week.selectedContestants = _.reject($scope.week.selectedContestants, contestantObject);
-        $scope.week.remainingContestants.push(contestantObject);
-        backendFactory.removeContestant($scope.week.id, contestant.id);
     };
 
     $scope.selectedContestantClicked = function(contestant, multiplier) {
@@ -41,7 +34,7 @@ app.controller('weekController', ['$rootScope', '$scope', '$routeParams', '$inte
             contestant : contestant,
             multiplier : multiplier,
             callback : function() {
-                $scope.removeContestant(contestant, multiplier);
+                selectionFactory.removeContestantById(contestant.id);
             }
         })
     };
@@ -60,7 +53,7 @@ app.controller('weekController', ['$rootScope', '$scope', '$routeParams', '$inte
             contestant : contestant,
             multiplier : multiplier,
             callback : function() {
-                $scope.selectContestant(contestant, multiplier);
+                selectionFactory.selectContestantById(contestant.id);
             }
         })
     };

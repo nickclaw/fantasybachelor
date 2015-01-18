@@ -3,15 +3,14 @@ app.directive('contestant', ['contestantFactory', function(contestantFactory) {
         restrict : 'A',
         templateUrl : 'view/contestant',
         scope : {
-            contestantId : '=',
-            multiplier : '=',
+            contestant : '=',
             showScore : '=',
             eliminated : '=',
             callback : '='
         },
         controller : ['$scope', function($scope) {
-            $scope.$watch('contestantId', function() {
-                $scope.contestant = contestantFactory.findContestantById($scope.contestantId);
+            $scope.$watch('contestant', function() {
+                $scope.contestant = contestantFactory.findContestantById($scope.contestant.id);
             });
         }]
     };

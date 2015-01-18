@@ -7,9 +7,7 @@
             </div>
             <div class="spacer"></div>
             <div class="selectionsWrapper">
-                <div contestant
-                     contestant-id="week.selectedContestants[i].id"
-                     multiplier="week.selectedContestants[i].multiplier"
+                <div contestant="week.selectedContestants[i]"
                      show-score="week.selectedContestants[i] && week.isScoresAvailable"
                      eliminated="isEliminated(week.selectedContestants[i])"
                      callback="week.selectedContestants[i] ? selectedContestantClicked : null"
@@ -41,6 +39,8 @@
     </div>
     <div id="remainingContestants">
         <h3>remaining contestants</h3>
-        <div contestant contestant-id="contestant.id" multiplier="contestant.multiplier" callback="remainingContestantClicked" ng-repeat="contestant in week.remainingContestants"></div>
+        <div contestant="contestant"
+            callback="remainingContestantClicked"
+            ng-repeat="contestant in week.remainingContestants"></div>
     </div>
 </div>

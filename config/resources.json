@@ -31,6 +31,7 @@
       "js/factories/unauthorizedInterceptor.js",
       "js/factories/userFactory.js",
       "js/factories/weeksFactory.js",
+      "js/factories/selectionFactory.js",
       "js/filters/momentFilter.js"
     ],
     "CSS": [
